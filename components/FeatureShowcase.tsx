@@ -28,7 +28,7 @@ export default function FeatureShowcase() {
       <div className="absolute inset-0 z-0 opacity-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       
       <div className="relative z-10 max-w-7xl mx-auto space-y-40 lg:pl-32 xl:pl-48">
-        {features.map((feature, idx) => (
+        {features.map((feature) => (
           <div 
             key={feature.id} 
             className={`flex flex-col ${feature.align === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-16 lg:gap-24`}

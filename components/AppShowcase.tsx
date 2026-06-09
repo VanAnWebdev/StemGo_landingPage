@@ -33,7 +33,7 @@ export default function AppShowcase() {
           </div>
           
           <p className="text-slate-300 text-lg md:text-xl font-light max-w-lg leading-relaxed border-l-4 border-tangerine pl-4">
-            "STEMGO" là một tựa game học tập Web 3.0, nơi bạn hoàn thành các nhiệm vụ Lập trình & Toán học để nhận huy hiệu và nâng cấp phi thuyền của riêng mình.
+            &quot;STEMGO&quot; là một tựa game học tập Web 3.0, nơi bạn hoàn thành các nhiệm vụ Lập trình & Toán học để nhận huy hiệu và nâng cấp phi thuyền của riêng mình.
           </p>
 
           <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm max-w-md">
