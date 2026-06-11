@@ -2,46 +2,27 @@
 
 import { useState, useEffect, useCallback } from "react";
 
-// CountAPI - free, no signup, persists across all users globally
-const NAMESPACE = "stemgo-vn";
-const KEY = "interest-clicks";
-const HIT_URL = `https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`;
-const GET_URL = `https://api.countapi.xyz/get/${NAMESPACE}/${KEY}`;
+const STORAGE_KEY = "stemgo_interest_v2";
+const BASE_COUNT = 15; // Số gốc ban đầu
 
 export function useInterestCounter() {
   const [count, setCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch current count on mount
+  // Đọc từ localStorage khi mount
   useEffect(() => {
-    fetch(GET_URL)
-      .then((r) => r.json())
-      .then((data) => {
-        if (data?.value !== undefined) setCount(data.value);
-      })
-      .catch(() => {
-        // Fallback: show base count from localStorage, starting at 15
-        const saved = localStorage.getItem("stemgo_clicks");
-        setCount(saved ? parseInt(saved) : 15);
-      })
-      .finally(() => setLoading(false));
+    const saved = localStorage.getItem(STORAGE_KEY);
+    setCount(saved ? parseInt(saved, 10) : BASE_COUNT);
+    setLoading(false);
   }, []);
 
-  // Increment counter on button click
+  // Tăng 1 mỗi khi user click button
   const increment = useCallback(() => {
-    fetch(HIT_URL)
-      .then((r) => r.json())
-      .then((data) => {
-        if (data?.value !== undefined) setCount(data.value);
-      })
-      .catch(() => {
-        // Fallback: increment locally starting from 15
-        setCount((prev) => {
-          const next = (prev ?? 15) + 1;
-          localStorage.setItem("stemgo_clicks", String(next));
-          return next;
-        });
-      });
+    setCount((prev) => {
+      const next = (prev ?? BASE_COUNT) + 1;
+      localStorage.setItem(STORAGE_KEY, String(next));
+      return next;
+    });
   }, []);
 
   return { count, loading, increment };
