@@ -3,9 +3,11 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import QRPopupModal from "./QRPopupModal";
+import { useInterest } from "../context/InterestContext";
 
 export default function CallToActionSection() {
   const [showQR, setShowQR] = useState(false);
+  const { increment } = useInterest();
 
   return (
     <>
@@ -28,7 +30,7 @@ export default function CallToActionSection() {
             </p>
             
             <button
-              onClick={() => setShowQR(true)}
+              onClick={() => { setShowQR(true); increment(); }}
               className="bg-tangerine text-white hover:brightness-110 px-10 py-4 rounded-2xl transition-all font-black tracking-wide text-lg shadow-[0_8px_0_#b36600] active:translate-y-1 active:shadow-none border-4 border-[#b36600] uppercase cursor-pointer"
             >
               📱 Tải STEMGO ngay

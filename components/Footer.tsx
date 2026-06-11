@@ -1,9 +1,31 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Mail, Phone, MapPin, Flame, TrendingUp } from "lucide-react";
+import { useInterest } from "../context/InterestContext";
+import { useEffect, useRef, useState } from "react";
 
 export default function Footer() {
+  const { count, loading } = useInterest();
+
+  // Animated count display
+  const [displayCount, setDisplayCount] = useState(0);
+  const prevRef = useRef(0);
+  useEffect(() => {
+    if (!count) return;
+    const start = prevRef.current;
+    const end = count;
+    const diff = end - start;
+    if (diff <= 0) { setDisplayCount(end); return; }
+    let frame = 0;
+    const total = Math.min(60, diff);
+    const timer = setInterval(() => {
+      frame++;
+      setDisplayCount(Math.round(start + (diff * frame) / total));
+      if (frame >= total) { clearInterval(timer); prevRef.current = end; }
+    }, 16);
+    return () => clearInterval(timer);
+  }, [count]);
   return (
     <footer className="relative z-10 pt-20 pb-12 px-4 md:px-8 mt-24">
       
@@ -94,6 +116,62 @@ export default function Footer() {
             </div>
           </div>
 
+        </div>
+
+        {/* ── Độ Hứng Thú Counter ── */}
+        <div className="flex justify-center mb-10">
+          <div
+            className="relative flex items-center gap-4 px-6 py-4 rounded-2xl overflow-hidden"
+            style={{
+              background: "linear-gradient(135deg, rgba(255,146,0,0.12), rgba(3,62,140,0.18))",
+              border: "1px solid rgba(255,146,0,0.3)",
+              boxShadow: "0 0 30px rgba(255,146,0,0.1), inset 0 1px 0 rgba(255,255,255,0.06)",
+            }}
+          >
+            {/* Pulse glow bg */}
+            <div
+              className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+              style={{ background: "linear-gradient(135deg, rgba(255,146,0,0.08), rgba(3,62,140,0.12))" }}
+            />
+
+            {/* Fire icon */}
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ background: "linear-gradient(135deg, #FF9200, #E67E00)", boxShadow: "0 4px 16px rgba(255,146,0,0.4)" }}
+            >
+              <Flame className="w-6 h-6 text-white" fill="white" />
+            </div>
+
+            {/* Text block */}
+            <div className="flex flex-col">
+              <span className="text-[10px] font-black uppercase tracking-[0.18em] text-tangerine/80 mb-0.5">
+                ĐỘ HỨNG THÚ
+              </span>
+              <div className="flex items-baseline gap-2">
+                {loading ? (
+                  <span className="text-white/30 text-2xl font-black animate-pulse">...</span>
+                ) : (
+                  <AnimatePresence mode="popLayout">
+                    <motion.span
+                      key={displayCount}
+                      initial={{ y: -8, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      className="text-2xl font-black text-white tabular-nums"
+                    >
+                      {displayCount.toLocaleString("vi-VN")}
+                    </motion.span>
+                  </AnimatePresence>
+                )}
+                <span className="text-white/40 text-sm font-bold">lượt quan tâm</span>
+              </div>
+            </div>
+
+            {/* Trending icon */}
+            <div className="ml-2 flex flex-col items-center gap-1">
+              <TrendingUp className="w-5 h-5 text-tangerine" />
+              <span className="text-[9px] text-tangerine font-black tracking-wider">LIVE</span>
+            </div>
+          </div>
         </div>
 
         {/* Divider */}

@@ -2,10 +2,12 @@
 
 import { useCallback, useState } from "react";
 import QRPopupModal from "./QRPopupModal";
+import { useInterest } from "../context/InterestContext";
 
 export default function Header() {
   const [showQR, setShowQR] = useState(false);
-  const open = useCallback(() => setShowQR(true), []);
+  const { increment } = useInterest();
+  const open = useCallback(() => { setShowQR(true); increment(); }, [increment]);
   const close = useCallback(() => setShowQR(false), []);
 
   return (

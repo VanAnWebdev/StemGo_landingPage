@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useState, useCallback } from "react";
 import QRPopupModal from "./QRPopupModal";
+import { useInterest } from "../context/InterestContext";
 
 const Spline = dynamic(() => import("@splinetool/react-spline"), {
   ssr: false,
@@ -12,7 +13,8 @@ const Spline = dynamic(() => import("@splinetool/react-spline"), {
 
 export default function HeroGamified() {
   const [showQR, setShowQR] = useState(false);
-  const open = useCallback(() => setShowQR(true), []);
+  const { increment } = useInterest();
+  const open = useCallback(() => { setShowQR(true); increment(); }, [increment]);
   const close = useCallback(() => setShowQR(false), []);
 
   return (
